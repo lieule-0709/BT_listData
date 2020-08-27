@@ -14,18 +14,64 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  background-color: #30405e;
+  min-height: 7%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  text-align: left;
 }
 
-.App-link {
-  color: #61dafb;
+body{
+  
+  background-color: cornsilk
+}
+
+.App-header h3 {
+  padding: 0px 0px 0px 3%;
+}
+
+h3 {
+  font-family: 'Libre Baskerville', serif;
+}
+
+h2{
+  
+  color: #30405e ;
+}
+
+@keyframes jump {
+  0%   {top: 100px;}
+  50%  {top: 85px;}
+  100% {top: 100px;}
+}
+
+h1{
+  color: #eb92a4;
+  top: 100px;
+  animation-name: jump;
+  animation-duration: 1.2s;
+  animation-iteration-count: infinite;
+  position: relative;
+}
+
+h2, h1{ 
+  font-family: 'Rouge Script',cursive; 
+  font-size: 40px; 
+  font-weight: normal; 
+  line-height: 48px; margin: 20px 0 20px; 
+  text-align: center; 
+  text-shadow: 1px 1px 2px #68848b; 
+}
+
+.title-detail{
+  margin-bottom: 90px;
+}
+
+a{
+  color: wheat;
 }
 
 @keyframes App-logo-spin {
@@ -35,4 +81,112 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.content {
+  width: 100%;
+}
+
+.list-users{
+  width: 30%;
+  min-height: 700px;
+  float: left;
+  background-color: #c9adce63;
+}
+
+.detail-user{
+  height: 100%;
+  width: 70%;
+  float: right;
+}
+
+.detail-view{
+  width: 70%;
+  margin: auto
+}
+
+.user-detail{
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+
+#edit, #delete{
+  width: 25px;
+  height: 25px;
+  margin-left: 10px;
+}
+
+#avatar{
+  width: 200px;
+  height: 270px;
+  border-radius: 20px;
+  box-shadow: #30405e 4px 4px 4px;
+  overflow:hidden;
+  margin: auto;
+} 
+
+
+
+
+.item{
+  width: 270px;
+  margin:auto;
+  margin-top: 20px;
+}
+
+.card{
+  width: 270px;
+  height:70px;
+  margin: auto;
+  margin-top: 20px;
+  border-radius: 7px;
+  overflow:hidden;
+  display: flex;
+  float: left;
+}
+.card .avata{
+  width: 70px;
+  height: 100%;
+  position: relative;
+  background-color: rgb(159, 207, 207);
+}
+
+.card .avata img{
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  overflow:hidden;
+  -webkit-transform: translate(-50%, -50%);
+  margin: auto;
+}
+
+
+.card .name{
+  font-family: 'Rouge Script',cursive; 
+  width: 200px;
+  height: 100%;
+  background-color:rgb(211, 146, 121);
+  line-height: 70px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+table {
+  font-family: 'Rouge Script',cursive; 
+  height: 170px;
+  line-height: 70px;
+  font-weight: 500;
+  color: #683535;
+  text-align: left;
+  margin:auto;
+}
+
+th{
+  min-width: 100px;
 }
