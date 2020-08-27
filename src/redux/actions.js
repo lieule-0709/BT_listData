@@ -32,11 +32,12 @@ export function getEmployeesFail(error){
     }
 }
 
+//https://reqres.in/api/users?page=2
 export const getEmployees=()=>{
     return dispatch =>{
         try{
             dispatch(getEmployeesPending());
-            return fetch('https://reqres.in/api/users?delay=1')
+            return fetch('https://reqres.in/api/users?delay=3')
             .then(data=>data.json())
             .then(res => {
                 return dispatch(getEmployeesSuccess(res))});
@@ -90,20 +91,16 @@ export const getEmployee=(id)=>{
     }
 }
 
-export const editEmployee=(id)=>{
+export const editEmployee=(id, data)=>{
     return dispatch =>{
         try{
             dispatch(fetchPending());
-            return fetch(`https://reqres.in/api/users/2`, {
+            return fetch(`https://reqres.in/api/users/${id}`, {
                 method: 'POST',
                 headers: {
                   "Content-Type": "application/json"
                 },
-                body: JSON.stringify({
-                    "name": "LIEU Lê",
-                    "job": "zion resident"
-                })
-                
+                body: JSON.stringify(data)
               })
             .then(data=>data.json())
             .then(res => {
@@ -116,7 +113,6 @@ export const editEmployee=(id)=>{
         };
     }
 }
-
 
 export const deleteEmployee=()=>{
     return dispatch =>{

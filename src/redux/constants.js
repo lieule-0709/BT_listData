@@ -10,4 +10,3 @@ export const FETCH_PENDING = 'fetchSuccess';
 export const FETCH_F = 'fetchFail';
 
 export const UPDATE_ID = 'updateId';
-
