@@ -48,12 +48,14 @@ const Detail = ({ getEmployee, detail, id, loadingDetail, editEmployee, deleteEm
               { user.email && <tr><td className='td-title'>Email:</td><td>{user.email}</td></tr>}
               { user.job && <tr><td className='td-title'>Job:</td><td>{user.job}</td></tr>}
               <tr id='tr_name' style={{"display": "none"}} onKeyUp={edit}><td className='td-title'>New name:</td><td ><input type="text" id="input_name"/></td></tr>
-              <tr id='tr_job'  style={{"display": "none"}} onKeyUp={edit}><td className='td-title'>Job:</td><td><input type="text" id="input_job"/></td></tr>
+              <tr id='tr_job'  style={{"display": "none"}} onKeyUp={edit}><td className='td-title'>Job:</td><td><input type="text" id="input_job"/></td></tr>            
               <tr>
                 <td className='td-title'>
                   <i className="fa fa-pencil-square-o" id='edit' onClick={() => {
-                    document.getElementById('tr_name').style={'display': 'block', 'transform': '1s'};
-                    document.getElementById('tr_job').style={'display': 'block', 'transform': '1s'};
+                    document.getElementById('direct').innerText = 'fill new name and job then click enter to edit';
+                    document.getElementById('tr_name').style={'display': 'block'};
+                    document.getElementById('tr_job').style={'display': 'block'};
+                    document.getElementsByClassName('user-detail')[0].style={'height': '170px'};
                       let data = {
                         name: document.getElementById('input_name').value,
                         job: document.getElementById('input_job').value
@@ -65,6 +67,7 @@ const Detail = ({ getEmployee, detail, id, loadingDetail, editEmployee, deleteEm
                   <i className="fa fa-trash-o" id='delete' onClick={deleteEmployee} alt="delete" />
                 </td></tr>
             </table>
+            <span id='direct'></span>
           </div>
         </div>
       }
