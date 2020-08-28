@@ -4,7 +4,7 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  background: radial-gradient(rgb(212, 201, 201), #f3d0d0);
+  background-color: rgba(248, 237, 234, 0.842);
 }
 
 .App {
@@ -89,8 +89,8 @@ a{
 
 .list-users{
   width: 60%;
-  min-height: 700px;
   margin:auto;
+  margin-bottom: 50px;
 }
 
 .detail-view{
@@ -163,18 +163,16 @@ table {
 
 .card{
   width: 100%;
-  /* height:70px; */
   margin: auto;
   margin-top: 20px;
   border-radius: 7px;
   overflow:hidden;
   display: flex;
   flex-wrap: wrap;
-  /* float: left; */
   transition: 0.25s;
   cursor: pointer;
   box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.336);
-  background: rgb(230, 222, 223);
+  background: rgb(252, 245, 246);
 }
 .card:hover{
   transform: translateY(-5px);
@@ -182,10 +180,8 @@ table {
 }
 
 .card .avata{
-  /* width: 70px; */
   flex-basis: 30%;
   display: flex;
-  /* height: 100%; */
   position: relative;
   background-color: rgb(159, 207, 207);
   align-items: center;
@@ -202,7 +198,6 @@ table {
   font-size: 25px;
   color: #30405e;
   font-weight: bold;
-  /* transition: 0.25s; */
 }
 .fa:hover {
   transform: scale(1.5);
@@ -219,7 +214,7 @@ table {
 
 .card .name{
   flex-basis: 70%;
-  background-color:rgb(211, 146, 121);
+  background-color:rgb(226, 164, 142);
   line-height: 70px;
   font-weight: 500;
   color: #ffffff;
