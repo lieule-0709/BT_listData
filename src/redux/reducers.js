@@ -1,13 +1,15 @@
 import {GET_EMPLOYEES, GET_EMPLOYEES_SS, GET_EMPLOYEES_F,
     GET_EMPLOYEE_SS, EDIT_EMPLOYEE_SS, DELETE_EMPLOYEE_SS,
-    FETCH_PENDING, FETCH_F, UPDATE_ID} from './constants.js';
+    FETCH_PENDING, FETCH_F, UPDATE_ID, LOGIN_SS, LOGIN_F} from './constants.js';
 
 const initialState = {
     employees: [],
     id: 0,
     detail: {},
     loading: false,
-    loadingDetail: false
+    loadingDetail: false,
+    token: "",
+    error:""
 };
 
 export default function rootReducers(state=initialState, action){
@@ -20,16 +22,16 @@ export default function rootReducers(state=initialState, action){
         case GET_EMPLOYEES_SS:
             return{
                 ...state,
-                employees : action.payload.data,
+                employees : action.payload,
                 loading : false
             }
         case GET_EMPLOYEES_F:
             console.log(action.payload);
             return{
                 ...state,
-                loading : false
+                loading : false,
+                error: action.payload
             }
-
         case FETCH_PENDING: 
             return{
                 ...state,
@@ -40,14 +42,15 @@ export default function rootReducers(state=initialState, action){
             console.log(action.payload);
             return{
                 ...state,
-                loadingDetail: true
+                loadingDetail: false,
+                error: action.payload
             }
             
         case GET_EMPLOYEE_SS:
             return{
                 ...state,
                 loadingDetail: false,
-                detail : action.payload.data
+                detail : action.payload
             }
 
         case EDIT_EMPLOYEE_SS:
@@ -69,7 +72,11 @@ export default function rootReducers(state=initialState, action){
             ...state,
             id: action.payload
         }
-
+        case LOGIN_SS:
+            return{
+                ...state,
+                token : action.payload
+            }
         default: {
             return state
         }
