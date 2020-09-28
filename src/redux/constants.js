@@ -14,4 +14,5 @@ export const UPDATE_ID = 'updateId';
 
 export const LOGIN_SS = 'loginSS';
 export const LOGIN_F = 'loginF';
+export const LOGOUT = 'logout';
 

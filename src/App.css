@@ -3,8 +3,9 @@
 }
 
 body {
-  font-family: 'Poppins', sans-serif;
-  background-color: rgba(241, 241, 241, 0.842);
+  /* font-family: 'Poppins', sans-serif; */
+  font-family: 'Grandstander', cursive;
+  background: linear-gradient(to right, #75c7c1, #86A8E7, #7F7FD5);
 }
 
 .App {
@@ -23,19 +24,48 @@ body {
 }
 
 .App-header {
-  background-color: #30405e;
-  min-height: 7%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background:  rgba(0, 0, 0, 0.6);
+  /* background: #1c4d4d6e; */
+  min-height: 8%;
   text-align: left;
+  /* position: relative; */
 }
 
 
-.App-header h3 {
-  padding: 0px 0px 0px 3%;
+.App-header .logo-app {
+  /* padding: 3px 7px 7px 7px; */
+  height: 75px;
+  width: 230px;
+}
+
+.status{
+  position: relative;
+  left: 87%;
+  bottom: 7px;
+}
+
+.st-click{
+  display: inline-block;
+  position: relative;
+  padding: 0 2px 0 2px;
+  margin: 0 10px 0 10px;
+  color: white;
+  cursor: pointer;
+}
+
+.st-click::after{
+  content: " ";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 1px;
+  width: 0;
+  background-color: #f7f7f7;
+  transition: 1s;
+}
+
+.st-click:hover::after{
+  width: 100%;
 }
 
 h2{
@@ -83,10 +113,6 @@ a{
   }
 }
 
-.content {
-  width: 100%;
-}
-
 .list-users{
   width: 60%;
   margin:auto;
@@ -104,15 +130,19 @@ a{
 }
 
 .user-detail{
-  width: 100%;
+  max-width: 90%;
   display: flex;
   flex-wrap: wrap;
+  margin: auto;
 }
 table {
   font-weight: 50;
   color: #f7f7f7;
   text-align: center;
   color: #30405e;
+  justify-content: left;
+  font-weight: 450;
+  line-height: 25px;
 }
 
 .td-title{
@@ -149,14 +179,6 @@ table {
   margin-left: 10px;
 }
 
-#avatar{
-  width: 150px;
-  height: 190px;
-  border-radius: 15px;
-  box-shadow: #30405e 3px 3px 3px;
-  overflow:hidden;
-} 
-
 .item{
   width: 400px;
   margin:auto;
@@ -172,20 +194,21 @@ table {
   flex-wrap: wrap;
   transition: 0.25s;
   cursor: pointer;
-  box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.336);
-  background: rgb(252, 245, 246);
+  background: rgba(0, 0, 0, 0.2);
 }
 .card:hover{
   transform: translateY(-5px);
   transform: scale(1.05);
 }
+/* 
+
+*/
 
 .card .avata{
-  flex-basis: 30%;
+  flex-basis: 25%;
   display: flex;
   position: relative;
-  background-color: rgb(159, 207, 207);
-  /* background-color: rgb(159, 207, 207); */
+  background: rgba(0, 0, 0, 0.2);
   align-items: center;
   vertical-align: center;
   z-index: 10;
@@ -209,14 +232,15 @@ table {
   border: solid black 2px;
   width: 60px;
   height: 60px;
+  max-width: 100%;
   border-radius: 50%;
   overflow:hidden;
   margin: auto;
 }
 
 .card .name{
-  flex-basis: 70%;
-  background-color:rgb(226, 164, 142);
+  flex-basis: 75%;
+  background: rgba(0, 0, 0, 0.2);
   line-height: 70px;
   font-weight: 500;
   color: #ffffff;
@@ -246,7 +270,7 @@ table {
   position: absolute;
   top: -2px;
   right: 0;
-  transform: translateX(+50%);
+  transform: translateX(-7px);
   border: 3px solid #f1f1f1;
   z-index: 20;
 }
@@ -299,8 +323,8 @@ table {
 #create {
   position: absolute;
   right: 0;
-  transform: translateX(30%);
-  background-color: #4CAF50;
+  transform: translateX(-10px);
+  background-color: #68e77dde;
   color: white;
   padding: 16px 20px;
   border: none;
@@ -308,9 +332,17 @@ table {
   cursor: pointer;
   width: 200px;
   margin-bottom:10px;
-  opacity: 0.9;
+  font-weight: bold;
+  z-index: 20;
 }
 
 .div_popup{
   position: relative;
+}
+
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 220px;
 }
