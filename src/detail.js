@@ -32,6 +32,31 @@ const Detail = ({ getEmployee, detail, id, loadingDetail, editEmployee, deleteEm
       {id != 0 && (loadingDetail && <h3 id='loading-detail'>loading</h3> )||
         <div id='goDown'>
           <div className='user-detail'>
+            <form class="form-container" action="">
+              {(user.fullName) && 
+                <div><label for="fullName"><b>FullName</b></label>
+                <input type="text" id="fullName" placeholder="FullName" name="fullName" />
+                </div>
+              }
+              {(user.email) && 
+              <div>
+                <label for="email"><b>Email</b></label>
+                <input type="text" id="email" placeholder="Email" name="email" />
+              </div>
+              }
+
+              {(user.username) && <div>
+              <label for="username"><b>Username</b></label>
+              <input type="text" id="username" placeholder="Enter username" name="username" />
+              </div>}
+
+              <button id="btn_login" type="button" class="btn" onClick={login_btn_click}>login</button>
+              <button id="btn_regist" type="button" class="btn" onClick={regist_btn_click}>regist</button>
+              <button type="button" class="btn cancel" onClick={closeLoginForm}>Close</button>
+            </form>
+        </div>
+
+
             <table>
               <tr ><td className='td-title'>Id:</td><td>{user.id}</td></tr>
               {(user.fullName) && <tr ><td className='td-title'>Full name:</td><td>{user.fullName}</td></tr>}

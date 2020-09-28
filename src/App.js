@@ -177,6 +177,7 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
         </div>
 
         
+        {id && <Detail />}
       
         <div className="list-users">
         <h2>List Employees</h2>
@@ -188,7 +189,6 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
                 <div className='name'>
                   {employee.username}
                 </div>
-                {(employee.id == id) && <Detail />}
               </div>
             </div>
           ))}
