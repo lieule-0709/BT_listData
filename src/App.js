@@ -180,7 +180,8 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
       
         <div className="list-users">
         <h2>List Employees</h2>
-          {list.map(employee => (
+          {
+          list.map(employee => (
             <div className="item column"  key={employee.id}>
               <div className='card' onClick={()=>{updateId(employee.id); }}>
                 <div className='avata' > <img src={employee.avatar} alt="avatar of user here :(" /></div>
