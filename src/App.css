@@ -25,15 +25,12 @@ body {
 
 .App-header {
   background:  rgba(0, 0, 0, 0.6);
-  /* background: #1c4d4d6e; */
   min-height: 8%;
   text-align: left;
-  /* position: relative; */
 }
 
 
 .App-header .logo-app {
-  /* padding: 3px 7px 7px 7px; */
   height: 75px;
   width: 230px;
 }
@@ -73,21 +70,16 @@ h2{
   color: #30405e;
 }
 
+button{
+  font-family: 'Grandstander', cursive;
+  border-radius: 4px;
+}
+
 @keyframes jump {
   0%   {top: 300px;}
   50%  {top: 285px;}
   100% {top: 300px;}
 }
-/* 
-h1{
-  color: #eb92a4;
-  display: block;
-  top: 300px;
-  animation-name: jump;
-  animation-duration: 1.2s;
-  animation-iteration-count: infinite;
-  position: relative;
-} */
 
 h2, h1{ 
   font-size: 40px; 
@@ -130,12 +122,18 @@ a{
   transition-duration: 1s;
 }
 
-.user-detail{
-  max-width: 90%;
-  display: flex;
-  flex-wrap: wrap;
+#user-detail{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 21;
   margin: auto;
+  border-radius: 7px;
+  overflow: hidden;
 }
+
+
 table {
   font-weight: 50;
   color: #f7f7f7;
@@ -157,24 +155,16 @@ table {
   font-size: small;
 }
 
-@keyframes goDown {
-  0%   {top: -30px;}
-  50%  {top: 0px;}
-  100% {top: 0px;}
-}
-
-@keyframes upheight {
-  0%   {max-height: 0px;}
-  100%  {max-height: 200px;}
-}
-
 #goDown{
-  animation-name: goDown;
-  animation-duration: 1s;
-  animation-iteration-count: 1;
-  position: relative;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(54, 54, 54, 0.87);
+  backdrop-filter: blur(10px);
+  z-index: 20;
 }
-
 
 #edit, #delete{
   width: 25px;
@@ -256,6 +246,8 @@ table {
 
 /* The popup form - hidden by default */
 .form-popup {
+
+  border-radius: 7px;
   display: none;
   position: absolute;
   top: -2px;
@@ -268,7 +260,7 @@ table {
 /* Add styles to the form container */
 .form-container {
   max-width: 300px;
-  padding: 10px;
+  padding: 25px 18px 15px 18px;
   background-color: white;
 }
 
@@ -289,6 +281,7 @@ table {
 
 /* Set a style for the submit/login button */
 .form-container .btn {
+  font-size: medium;
   background-color: #4CAF50;
   color: white;
   padding: 16px 20px;
@@ -302,7 +295,7 @@ table {
 /* css for popup */
 /* Add a red background color to the cancel button */
 .form-container .cancel {
-  background-color: red;
+  background-color: rgba(228, 149, 30, 0.877);
 }
 
 /* Add some hover effects to buttons */
@@ -314,7 +307,7 @@ table {
   position: absolute;
   right: 0;
   transform: translateX(-10px);
-  background-color: #68e77dde;
+  background-color: #57d36cde;
   color: white;
   padding: 16px 20px;
   border: none;
@@ -335,4 +328,19 @@ table {
   width: 50%;
   padding: 20px;
   /* height: 220px; */
+}
+
+
+.fa {
+  font-size: 25px;
+  color: #30405e;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+.fa:hover {
+  transform: scale(1.5);
+}
+
+.i{
+  width: 50%;
 }

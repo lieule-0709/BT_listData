@@ -3,17 +3,14 @@ import './App.css';
 import { connect } from "react-redux";
 import { useEffect } from 'react';
 import logo from './logo.svg'; 
-import { getEmployees, updateId, getEmployee, addEmployee, 
-  deleteEmployee, deleteEmployees, editEmployee, login, regist, logout} from './redux/actions';
+import { getEmployees, updateId, getEmployee, addEmployee, login, regist, logout} from './redux/actions';
 import Detail from './detail.js'
-// import Popup from 'reactjs-popup';
-
 
 let list = [];
 let token = "";
 let status = "";
 
-const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, employees, updateId, id, regist, login, logout, token, addEmployee }) => {
+const App = React.memo(({ getEmployees, getEmployee, loading, employees, updateId, id, regist, login, logout, token, addEmployee }) => {
 
   useEffect(() => {
     getEmployees();
@@ -113,7 +110,6 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
 
   return (
     <div className="App">
-
       <header className="App-header">
         <img className="logo-app"src={require("./icon/120017990_329072801636807_1813089441055996983_n.png")}/>
         <div className="status">
@@ -131,7 +127,6 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
         ||
       <div className="content">
         <div className="div_popup">
-
           <button onClick={openAddForm} id="create"> Create employee </button>
 
           <div class="form-popup" id="addForm">
@@ -166,25 +161,21 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
               <label for="password"><b>Password</b></label>
               <input type="password" id="password" placeholder="Enter Password" name="password" />
 
-              {/* {new String("regist").valueOf == new String(status).valueOf && <label for="retype"><b>Retype Password</b></label>}
-              {new String("regist").valueOf == new String(status).valueOf && <input type="text" id="retype" placeholder="Retype Password" name="retype" required/>} */}
-
               <button id="btn_login" type="button" class="btn" onClick={login_btn_click}>login</button>
               <button id="btn_regist" type="button" class="btn" onClick={regist_btn_click}>regist</button>
               <button type="button" class="btn cancel" onClick={closeLoginForm}>Close</button>
             </form>
           </div>
         </div>
-
         
-        {id && <Detail />}
+        {!id==0 && <Detail />}
       
         <div className="list-users">
         <h2>List Employees</h2>
           {
           list.map(employee => (
             <div className="item column"  key={employee.id}>
-              <div className='card' onClick={()=>{updateId(employee.id); }}>
+              <div className='card' onClick={()=>{updateId(employee.id);}}>
                 <div className='avata' > <img src={employee.avatar} alt="avatar of user here :(" /></div>
                 <div className='name'>
                   {employee.username}

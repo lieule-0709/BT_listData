@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from "react-redux";
 import { getEmployee, editEmployee, deleteEmployee } from './redux/actions';
-import { useEffect } from 'react';
 
 let user = {}
 
@@ -9,9 +8,13 @@ const Detail = ({ getEmployee, detail, id, loadingDetail, editEmployee, deleteEm
 
   user = detail;
 
+  const closeDetailForm = ()=>{
+    document.getElementById("goDown").style.display = "none";
+  }
+
  const edit= (e)=>{
     console.log('presss');
-    if(e.keyCode  == 13){
+    if(e.keyCode  === 13){
       let data = {
         fullName: document.getElementById('input_name').value,
         password: document.getElementById('input_job').value
@@ -29,57 +32,44 @@ const Detail = ({ getEmployee, detail, id, loadingDetail, editEmployee, deleteEm
   
   return (
     <div className="detail-view">
-      {id != 0 && (loadingDetail && <h3 id='loading-detail'>loading</h3> )||
+      {id !== 0 && (loadingDetail && <h3 id='loading-detail'>loading</h3>) ||
         <div id='goDown'>
-          <div className='user-detail'>
-            <form class="form-container" action="">
+          <div id='user-detail'>
+            <form class="form-container">
+              {(user.id) && 
+                <div  ><label for="id"><b>FullName</b></label>
+                <input type="text" id="id" value={user.id} name="id" />
+                </div>
+              }
               {(user.fullName) && 
                 <div><label for="fullName"><b>FullName</b></label>
-                <input type="text" id="fullName" placeholder="FullName" name="fullName" />
+                <input type="text" id="fullName" value={user.fullName} name="fullName" />
                 </div>
               }
               {(user.email) && 
               <div>
                 <label for="email"><b>Email</b></label>
-                <input type="text" id="email" placeholder="Email" name="email" />
+                <input type="text" id="email" value={user.email} name="email" />
               </div>
               }
-
               {(user.username) && <div>
               <label for="username"><b>Username</b></label>
-              <input type="text" id="username" placeholder="Enter username" name="username" />
+              <input type="text" id="username" value={user.username} name="username" />
               </div>}
-
-              <button id="btn_login" type="button" class="btn" onClick={login_btn_click}>login</button>
-              <button id="btn_regist" type="button" class="btn" onClick={regist_btn_click}>regist</button>
-              <button type="button" class="btn cancel" onClick={closeLoginForm}>Close</button>
-            </form>
-        </div>
-
-
-            <table>
-              <tr ><td className='td-title'>Id:</td><td>{user.id}</td></tr>
-              {(user.fullName) && <tr ><td className='td-title'>Full name:</td><td>{user.fullName}</td></tr>}
-              {(user.username) && <tr><td className='td-title'>User name:</td><td>{user.username}</td></tr>}
-              {user.email && <tr><td className='td-title'>Email:</td><td>{user.email}</td></tr>}
-              <tr id='tr_name' style={{"display": "none"}} onKeyUp={edit}><td className='td-title'>New name:</td><td ><input type="text" id="input_name"/></td></tr>
-              <tr id='tr_pass'  style={{"display": "none"}} onKeyUp={edit}><td className='td-title'>Pass:</td><td><input type="text" id="input_job"/></td></tr>            
-              <tr>
-                <td className='td-title'>
-                  <i className="fa fa-pencil-square-o" id='edit' onClick={() => {
+              <i className="fa fa-pencil-square-o" id='edit' onClick={() => {
                     document.getElementById('direct').innerText = 'fill new name and pass then click enter to edit';
                     document.getElementById('tr_name').style={'display': 'block'};
                     document.getElementById('tr_pass').style={'display': 'block'};
                     document.getElementsByClassName('user-detail')[0].style={'height': '170px'};
-                    }} alt="edit" />
-                </td>
-                <td className='td-title'>
-                  <i className="fa fa-trash-o" id='delete' onClick={()=>deleteEmployee(user.id, token)} alt="delete" />
-                </td></tr>
-            </table>
-            <span id='direct'></span>
-          </div>
+                    }} alt="edit" 
+              />
+              <i className="fa fa-trash-o" id='delete' onClick={()=>deleteEmployee(user.id, token)} alt="delete" />
+                  
+              <button type="button" class="btn cancel" onClick={closeDetailForm}>Close</button>
+            </form>
         </div>
+        </div>
+        
       }
     </div>
   )

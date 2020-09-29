@@ -1,11 +1,11 @@
-import {GET_EMPLOYEES, GET_EMPLOYEES_SS, GET_EMPLOYEES_F,
-     EDIT_EMPLOYEE_SS, GET_EMPLOYEE_SS,
-     FETCH_PENDING, FETCH_F, DELETE_EMPLOYEE_SS,
-     UPDATE_ID, LOGIN_SS, LOGIN_F, ADD_EMPLOYEE, LOGOUT
+import {GET_EMPLOYEES, GET_EMPLOYEES_SS, GET_EMPLOYEES_F, GET_EMPLOYEE_SS,
+     FETCH_PENDING, FETCH_F,
+     UPDATE_ID, LOGIN_SS, LOGOUT
      } from './constants.js';
 
 
 export function updateIdSS(id){
+    if(document.getElementById("goDown")) document.getElementById("goDown").style.display = "block";
     return {
         type: UPDATE_ID,
         payload: id
@@ -96,26 +96,12 @@ export function getEmployeeSuccess(data){
     }
 }
 
-export function loginFail(){
-    return {
-        type: LOGIN_F
-    }
-}
-
 export function loginSS(data){
     return {
         type: LOGIN_SS,
         payload: data
     }
 }
-
-export function editEmployeeSuccess(data){
-    return {
-        type: EDIT_EMPLOYEE_SS,
-        payload: data
-    }
-}
-
 
 export const getEmployee=(id)=>{
     return dispatch =>{
@@ -175,12 +161,12 @@ export const deleteEmployee=(id, token)=>{
               })
             .then(data=>{
                 if(data.ok){
-                    return data.json()
+                    return data.json();
                 }
                 else throw new Error("something went wrong");})
             .then(res => {
-                console.log(res);
-                return dispatch(editEmployeeSuccess(res))})
+                // window.alert("deleted user has id = "+res.id);
+                return dispatch(getEmployees())})
             .catch(error => {alert(error)});
         }
         catch(error){
@@ -259,7 +245,8 @@ export const addEmployee=(token, data)=>{
                 body: JSON.stringify(data)})
             .then(data=>{
                 if(data.ok){
-                    return data.json()
+                    //alert ss
+                    return data.json();
                 }
                 else throw new Error("something went wrong");})
             .then(res => {
