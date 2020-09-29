@@ -5,7 +5,7 @@ import {GET_EMPLOYEES, GET_EMPLOYEES_SS, GET_EMPLOYEES_F, GET_EMPLOYEE_SS,
 
 
 export function updateIdSS(id){
-    if(document.getElementById("goDown")) document.getElementById("goDown").style.display = "block";
+    if(document.getElementById("detail")) document.getElementById("detail").style.display = "block";
     return {
         type: UPDATE_ID,
         payload: id
@@ -161,6 +161,7 @@ export const deleteEmployee=(id, token)=>{
               })
             .then(data=>{
                 if(data.ok){
+                    if(document.getElementById("detail")) document.getElementById("detail").style.display = "none";
                     return data.json();
                 }
                 else throw new Error("something went wrong");})
@@ -187,7 +188,7 @@ export const login=(dataUser)=>{
                 if (data.ok) {
                     return data.json();
                 }
-                throw new Error('Something went wrong');
+                throw new Error('Something went wrong. please try again!!!');
             })
             .then(res => {
                 dispatch(loginSS(res.token));
@@ -245,7 +246,7 @@ export const addEmployee=(token, data)=>{
                 body: JSON.stringify(data)})
             .then(data=>{
                 if(data.ok){
-                    //alert ss
+                    document.getElementById("addForm").style.display = "none";
                     return data.json();
                 }
                 else throw new Error("something went wrong");})

@@ -3,14 +3,17 @@ import './App.css';
 import { connect } from "react-redux";
 import { useEffect } from 'react';
 import logo from './logo.svg'; 
-import { getEmployees, updateId, getEmployee, addEmployee, login, regist, logout} from './redux/actions';
+import { getEmployees, updateId, getEmployee, addEmployee
+  , login, regist, logout} from './redux/actions';
 import Detail from './detail.js'
+// import Popup from 'reactjs-popup';
+
 
 let list = [];
 let token = "";
-let status = "";
+let status; //0:login   1:regist
 
-const App = React.memo(({ getEmployees, getEmployee, loading, employees, updateId, id, regist, login, logout, token, addEmployee }) => {
+const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, employees, updateId, id, regist, login, logout, token, addEmployee }) => {
 
   useEffect(() => {
     getEmployees();
@@ -20,29 +23,13 @@ const App = React.memo(({ getEmployees, getEmployee, loading, employees, updateI
   list = employees ? employees : list;
 
   var regist_click = ()=>{
-    status="regist";
-    console.log(status);
-    document.getElementById("addForm").style.display = "none";
-    document.getElementById("loginForm").style.display="block";
-    document.getElementById("btn_login").style.display="none";
-    document.getElementById("fullName").style.display="block";
-    document.getElementById("email").style.display="block";
-    document.getElementById("btn_regist").style.display="block";
-    document.getElementById("loginForm").childNodes[0].childNodes[2].style.display="block"; //label fullname
-    document.getElementById("loginForm").childNodes[0].childNodes[0].style.display="block"; //label email
+    status=1;
+    document.getElementById("loginForm").style.display = "block";
   }
 
   var login_click = ()=>{
-    status="login";
-    console.log(status);
-    document.getElementById("addForm").style.display = "none";
-    document.getElementById("loginForm").style.display="block";
-    document.getElementById("fullName").style.display="none";
-    document.getElementById("email").style.display="none";
-    document.getElementById("btn_login").style.display="block";
-    document.getElementById("btn_regist").style.display="none";
-    document.getElementById("loginForm").childNodes[0].childNodes[0].style.display="none"; //label fullname
-    document.getElementById("loginForm").childNodes[0].childNodes[2].style.display="none"; //label email
+    status=0;
+    document.getElementById("loginForm").style.display = "block";
   }
 
   var logout_click = ()=>{
@@ -50,11 +37,15 @@ const App = React.memo(({ getEmployees, getEmployee, loading, employees, updateI
   }
 
 
+  function closeLoginForm() {
+    document.getElementById("loginForm").style.display = "none";
+  }
+
   var regist_btn_click = ()=>{
     let data = {
       "fullName": document.getElementById('fullName').value,
       "email": document.getElementById('email').value,
-      "description": "ec ec ec",
+      "description": "",
       "username": document.getElementById('username').value,
       "password": document.getElementById('password').value
     }
@@ -92,9 +83,6 @@ const App = React.memo(({ getEmployees, getEmployee, loading, employees, updateI
     document.getElementById("addForm").style.display = "none";
   }
 
-  function closeLoginForm() {
-    document.getElementById("loginForm").style.display = "none";
-  }
 
   var create_click = ()=>{
     let data = {
@@ -126,49 +114,52 @@ const App = React.memo(({ getEmployees, getEmployee, loading, employees, updateI
       </div>
         ||
       <div className="content">
-        <div className="div_popup">
-          <button onClick={openAddForm} id="create"> Create employee </button>
+        <button onClick={openAddForm} id="create"> Create employee </button>
+        <div className="div_blur displayNone" id="addForm">
+          <div className="popup">
+            <form className="form-container">
+              {!token && <p style={{"color": "red"}}>please login before add new users</p>||
+                <div>
+                  <label htmlFor="fullname"><b>Fullname</b></label>
+                  <input type="text" id="newfullname" placeholder="Enter fullname" name="fullname" required/>
 
-          <div class="form-popup" id="addForm">
-            <form class="form-container">
-              {!token && <p style={{"color": "red"}}>please login before add new users</p>}
-              <label for="fullname"><b>Fullname</b></label>
-              <input type="text" id="newfullname" placeholder="Enter fullname" name="fullname" required/>
+                  <label htmlFor="username"><b>Username</b></label>
+                  <input type="text" id="newusername" placeholder="Enter username" name="username" required/>
 
-              <label for="username"><b>Username</b></label>
-              <input type="text" id="newusername" placeholder="Enter username" name="username" required/>
+                  <label htmlFor="password"><b>Password</b></label>
+                  <input type="password" id="newpassword" placeholder="Enter Password" name="password" required/>
 
-              <label for="password"><b>Password</b></label>
-              <input type="password" id="newpassword" placeholder="Enter Password" name="password" required/>
-
-              <button type="button" class="btn" onClick={create_click}>Create</button>
-              <button type="button" class="btn cancel" onClick={closeForm}>Close</button>
+                  <button type="button" className="btn" onClick={create_click}>Create</button>
+                </div>
+              }
+              <button type="button" className="btn cancel" onClick={closeForm}>Close</button>
             </form>
           </div>
+        </div>
 
-          <div class="form-popup" id="loginForm">
-            <form class="form-container" action="">
+        <div className="div_blur displayNone" id="loginForm">
+          <div className="popup">
+            <form className="form-container" action="">
+              {status && <label htmlFor="fullName"><b>FullName</b></label>}
+              {status && <input type="text" id="fullName" placeholder="FullName" name="fullName" />}
 
-              <label for="fullName"><b>FullName</b></label>
-              <input type="text" id="fullName" placeholder="FullName" name="fullName" />
+              {status && <label htmlFor="email"><b>Email</b></label>}
+              {status && <input type="text" id="email" placeholder="Email" name="email" />}
 
-              <label for="email"><b>Email</b></label>
-              <input type="text" id="email" placeholder="Email" name="email" />
-
-              <label for="username"><b>Username</b></label>
+              <label htmlFor="username"><b>Username</b></label>
               <input type="text" id="username" placeholder="Enter username" name="username" />
 
-              <label for="password"><b>Password</b></label>
+              <label htmlFor="password"><b>Password</b></label>
               <input type="password" id="password" placeholder="Enter Password" name="password" />
 
-              <button id="btn_login" type="button" class="btn" onClick={login_btn_click}>login</button>
-              <button id="btn_regist" type="button" class="btn" onClick={regist_btn_click}>regist</button>
-              <button type="button" class="btn cancel" onClick={closeLoginForm}>Close</button>
+              {!status && <button id="btn_login" type="button" className="btn" onClick={login_btn_click}>login</button>}
+              {status && <button id="btn_regist" type="button" className="btn" onClick={regist_btn_click}>regist</button>}
+              <button type="button" className="btn cancel" onClick={closeLoginForm}>Close</button>
             </form>
           </div>
         </div>
         
-        {!id==0 && <Detail />}
+        {<Detail/>}
       
         <div className="list-users">
         <h2>List Employees</h2>
