@@ -2,6 +2,7 @@ import {GET_EMPLOYEES, GET_EMPLOYEES_SS, GET_EMPLOYEES_F, GET_EMPLOYEE_SS,
      FETCH_PENDING, FETCH_F,
      UPDATE_ID, LOGIN_SS, LOGOUT
      } from './constants.js';
+import alertMessage from '../libs/AlertBox/alert';
 
 
 export function updateIdSS(id){
@@ -26,10 +27,10 @@ export const updateId=(id)=>{
             .then(res => {
                 return dispatch(getEmployeeSuccess(res))})
             .then(() => {return dispatch(updateIdSS(id))})
-            .catch(error => {alert(error)});
+            .catch(error => {alertMessage(error, 0, 1300)});
         }
         catch(error){
-            alert(error);
+            alertMessage(error, 0, 1300);
         };
     }
 }
@@ -67,12 +68,11 @@ export const getEmployees=()=>{
             })
             .then(data=>data.results)
             .then(res => {
-                console.log(res)
                 return dispatch(getEmployeesSuccess(res))})
-            .catch(error => {alert(error)});
+            .catch(error => {alertMessage(error, 0, 1300)});
         }
         catch(error){
-            alert(error)
+            alertMessage(error, 0, 1300);
         };
     }
 }
@@ -116,10 +116,10 @@ export const getEmployee=(id)=>{
             })
             .then(res => {
                 return dispatch(getEmployeeSuccess(res))})
-            .catch(error => {alert(error)});
+            .catch(error => {alertMessage(error, 0, 1300)});
         }
         catch(error){
-            alert(error);
+            alertMessage(error, 0, 1300);
         };
     }
 }
@@ -137,15 +137,16 @@ export const editEmployee=(id, data, token)=>{
               })
             .then(data=>{
                 if(data.ok){
+                    alertMessage("Edited!", 1, 1300);
                     return data.json()
                 }
                 else throw new Error("something went wrong");})
-            .then(res => {
-                console.log(res);
-                return dispatch(getEmployees())});
+            .then(data=>{
+                return dispatch(getEmployee(id));
+            })
         }
         catch(error){
-            alert(error);
+            alertMessage(error, 0, 1300);
         };
     }
 }
@@ -166,12 +167,12 @@ export const deleteEmployee=(id, token)=>{
                 }
                 else throw new Error("something went wrong");})
             .then(res => {
-                // window.alert("deleted user has id = "+res.id);
+                alertMessage("deleted user has id = "+res.id, 1, 1300)
                 return dispatch(getEmployees())})
-            .catch(error => {alert(error)});
+            .catch(error => {alertMessage(error, 0, 1300)});
         }
         catch(error){
-            alert(error);
+            alertMessage(error, 0, 1300);
         };
     }
 }
@@ -190,16 +191,17 @@ export const login=(dataUser)=>{
                 }
                 throw new Error('Something went wrong. please try again!!!');
             })
-            .then(res => {
-                dispatch(loginSS(res.token));
-                console.log(res);
+            .then(data=>{
+                alertMessage("welcome "+ data.username, 1, 1300);
+                document.getElementById("loginForm").style.display = "none";
+                return dispatch(loginSS(data.token));
             })
             .catch(err => {
-                alert(err);
+                alertMessage(err, 0, 1300);
             });
         }
         catch(error){
-            alert(error)
+            alertMessage(error, 0, 1300);
         };
     }
 }
@@ -214,14 +216,18 @@ export const regist=(dataUser)=>{
             })
             .then(data=>{
                 if(data.ok){
-                    return data.json()
+                    return data.json();
                 }
                 else throw new Error("something went wrong");})
-            .then(data=>dispatch(loginSS(data.token)))
-            .catch(error => {alert(error)});
+            .then(data=>{
+                alertMessage("welcome "+ data.username, 1, 1300);
+                document.getElementById("registForm").style.display = "none";
+                dispatch(loginSS(data.token));
+            })
+            .catch(error => {alertMessage(error, 0, 1300)});
         }
         catch(error){
-            alert(error);
+            alertMessage(error, 0, 1300);
         };
     }
 }
@@ -251,14 +257,14 @@ export const addEmployee=(token, data)=>{
                 }
                 else throw new Error("something went wrong");})
             .then(res => {
-                console.log(res);
+                alertMessage("created "+ res.username, 1, 1300);
                 return dispatch(getEmployees())})
-            .catch(er => {
-                alert(er);
+            .catch(err => {
+                alertMessage(err, 0, 1300);
             })
         }
         catch(error){
-            alert(error);
+            alertMessage(error, 0, 1300);
             dispatch(fetchFail());
         };
     }
