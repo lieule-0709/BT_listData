@@ -1,13 +1,14 @@
 import {GET_EMPLOYEES, GET_EMPLOYEES_SS, GET_EMPLOYEES_F,
-    GET_EMPLOYEE_SS, EDIT_EMPLOYEE_SS, DELETE_EMPLOYEE_SS,
-    FETCH_PENDING, FETCH_F, UPDATE_ID} from './constants.js';
+    GET_EMPLOYEE_SS, EDIT_EMPLOYEE_SS,
+    FETCH_PENDING, FETCH_F, UPDATE_ID, LOGIN_SS, LOGOUT} from './constants.js';
 
 const initialState = {
     employees: [],
     id: 0,
     detail: {},
     loading: false,
-    loadingDetail: false
+    loadingDetail: false,
+    token: localStorage.getItem("token")
 };
 
 export default function rootReducers(state=initialState, action){
@@ -20,16 +21,17 @@ export default function rootReducers(state=initialState, action){
         case GET_EMPLOYEES_SS:
             return{
                 ...state,
-                employees : action.payload.data,
-                loading : false
+                employees : action.payload,
+                loading : false,
+                loadingDetail: false
             }
         case GET_EMPLOYEES_F:
             console.log(action.payload);
             return{
                 ...state,
-                loading : false
+                loading : false,
+                loadingDetail: false
             }
-
         case FETCH_PENDING: 
             return{
                 ...state,
@@ -37,39 +39,35 @@ export default function rootReducers(state=initialState, action){
             }
             
         case FETCH_F:
-            console.log(action.payload);
             return{
                 ...state,
-                loadingDetail: true
+                loadingDetail: false
             }
             
         case GET_EMPLOYEE_SS:
             return{
                 ...state,
                 loadingDetail: false,
-                detail : action.payload.data
+                detail : action.payload
             }
 
-        case EDIT_EMPLOYEE_SS:
-            state.detail = action.payload;
-            state.loadingDetail = false;
-            return {
-                ...state,
-                detail: action.payload
-            }
-            
-        case DELETE_EMPLOYEE_SS:
-            return {
-                ...state,
-                employees:[]
-            }
-            
         case UPDATE_ID:
         return {
             ...state,
             id: action.payload
         }
-
+        case LOGIN_SS:
+            localStorage.setItem("token", action.payload);
+            return{
+                ...state,
+                token : action.payload
+            }
+        case LOGOUT:
+            localStorage.setItem("token", "");
+            return{
+                ...state,
+                token : ""
+            }
         default: {
             return state
         }

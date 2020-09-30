@@ -1,16 +1,40 @@
-import {GET_EMPLOYEES, GET_EMPLOYEES_SS, GET_EMPLOYEES_F,
-     EDIT_EMPLOYEE_SS, GET_EMPLOYEE_SS,
-     FETCH_PENDING, FETCH_F, DELETE_EMPLOYEE_SS,
-     UPDATE_ID
+import {GET_EMPLOYEES, GET_EMPLOYEES_SS, GET_EMPLOYEES_F, GET_EMPLOYEE_SS,
+     FETCH_PENDING, FETCH_F,
+     UPDATE_ID, LOGIN_SS, LOGOUT
      } from './constants.js';
+import alertMessage from '../libs/AlertBox/alert';
 
 
-export function updateId(id){
+export function updateIdSS(id){
+    if(document.getElementById("detail")) document.getElementById("detail").style.display = "block";
     return {
         type: UPDATE_ID,
         payload: id
     }
 }
+
+
+export const updateId=(id)=>{
+    return dispatch =>{
+        try{
+            return fetch(`http://ec2-54-169-237-154.ap-southeast-1.compute.amazonaws.com/api/v1/users/${id}`)
+            .then(data=>{
+                if(data.ok){
+                    return data.json()
+                }
+                else throw new Error("something went wrong");
+            })
+            .then(res => {
+                return dispatch(getEmployeeSuccess(res))})
+            .then(() => {return dispatch(updateIdSS(id))})
+            .catch(error => {alertMessage(error, 0, 1300)});
+        }
+        catch(error){
+            alertMessage(error, 0, 1300);
+        };
+    }
+}
+
 
 export function getEmployeesPending(){
     return {
@@ -25,25 +49,30 @@ export function getEmployeesSuccess(data){
     }
 }
 
-export function getEmployeesFail(error){
+export function getEmployeesFail(){
     return {
-        type: GET_EMPLOYEES_F,
-        payload: error
+        type: GET_EMPLOYEES_F
     }
 }
 
-//https://reqres.in/api/users?page=2
 export const getEmployees=()=>{
     return dispatch =>{
         try{
             dispatch(getEmployeesPending());
-            return fetch('https://reqres.in/api/users?delay=3')
-            .then(data=>data.json())
+            return fetch('http://ec2-54-169-237-154.ap-southeast-1.compute.amazonaws.com/api/v1/users?limit=10&offset=0')
+            .then(data=>{
+                if(data.ok){
+                    return data.json()
+                }
+                else throw new Error("something went wrong");
+            })
+            .then(data=>data.results)
             .then(res => {
-                return dispatch(getEmployeesSuccess(res))});
+                return dispatch(getEmployeesSuccess(res))})
+            .catch(error => {alertMessage(error, 0, 1300)});
         }
         catch(error){
-            dispatch(getEmployeesFail(error));
+            alertMessage(error, 0, 1300);
         };
     }
 }
@@ -54,10 +83,9 @@ export function fetchPending(){
     }
 }
 
-export function fetchFail(error){
+export function fetchFail(){
     return {
-        type: FETCH_F,
-        payload: error
+        type: FETCH_F
     }
 }
 
@@ -68,68 +96,176 @@ export function getEmployeeSuccess(data){
     }
 }
 
-export function editEmployeeSuccess(data){
+export function loginSS(data){
     return {
-        type: EDIT_EMPLOYEE_SS,
+        type: LOGIN_SS,
         payload: data
     }
 }
-
 
 export const getEmployee=(id)=>{
     return dispatch =>{
         try{
             dispatch(fetchPending());
-            return fetch(`https://reqres.in/api/users/${id}`)
-            .then(data=>data.json())
+            return fetch(`http://ec2-54-169-237-154.ap-southeast-1.compute.amazonaws.com/api/v1/users/${id}`)
+            .then(data=>{
+                if(data.ok){
+                    return data.json()
+                }
+                else throw new Error("something went wrong");
+            })
             .then(res => {
-                return dispatch(getEmployeeSuccess(res))});
+                return dispatch(getEmployeeSuccess(res))})
+            .catch(error => {alertMessage(error, 0, 1300)});
         }
         catch(error){
-            dispatch(fetchFail(error));
+            alertMessage(error, 0, 1300);
         };
     }
 }
 
-export const editEmployee=(id, data)=>{
+export const editEmployee=(id, data, token)=>{
     return dispatch =>{
         try{
-            dispatch(fetchPending());
-            return fetch(`https://reqres.in/api/users/${id}`, {
-                method: 'POST',
+            return fetch(`http://ec2-54-169-237-154.ap-southeast-1.compute.amazonaws.com/api/v1/users/${id}`, {
+                method: 'PUT',
                 headers: {
-                  "Content-Type": "application/json"
+                    'Content-Type': 'application/json', 'Accept': 'application/json',
+                  'Authorization': `${token}`
                 },
                 body: JSON.stringify(data)
               })
-            .then(data=>data.json())
-            .then(res => {
-                console.log(res);
-                return dispatch(editEmployeeSuccess(res))});
+            .then(data=>{
+                if(data.ok){
+                    alertMessage("Edited!", 1, 1300);
+                    return data.json()
+                }
+                else throw new Error("something went wrong");})
+            .then(data=>{
+                return dispatch(getEmployee(id));
+            })
         }
         catch(error){
-            console.log('sdiuhvknsbgi');
-            dispatch(fetchFail(error));
+            alertMessage(error, 0, 1300);
         };
     }
 }
 
-export const deleteEmployee=()=>{
+export const deleteEmployee=(id, token)=>{
     return dispatch =>{
         try{
             dispatch(fetchPending());
-            return fetch(`https://reqres.in/api/users/2`, {
-                method: 'POST'
+            return fetch(`http://ec2-54-169-237-154.ap-southeast-1.compute.amazonaws.com/api/v1/users/${id}`, {
+                method: 'DELETE',
+                headers: {'Accept': 'application/json' , 
+                'Authorization': `${token}`},
               })
-            .then(data=>data.json())
+            .then(data=>{
+                if(data.ok){
+                    if(document.getElementById("detail")) document.getElementById("detail").style.display = "none";
+                    return data.json();
+                }
+                else throw new Error("something went wrong");})
             .then(res => {
-                console.log(res);
-                return dispatch(editEmployeeSuccess(res))});
+                alertMessage("deleted user has id = "+res.id, 1, 1300)
+                return dispatch(getEmployees())})
+            .catch(error => {alertMessage(error, 0, 1300)});
         }
         catch(error){
-            console.log('error');
-            dispatch(fetchFail(error));
+            alertMessage(error, 0, 1300);
         };
     }
 }
 
+export const login=(dataUser)=>{
+    return dispatch =>{
+        try{
+            return fetch('http://ec2-54-169-237-154.ap-southeast-1.compute.amazonaws.com/api/v1/auth/login',{
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(dataUser)
+            })
+            .then(data => {
+                if (data.ok) {
+                    return data.json();
+                }
+                throw new Error('Something went wrong. please try again!!!');
+            })
+            .then(data=>{
+                alertMessage("welcome "+ data.username, 1, 1300);
+                document.getElementById("loginForm").style.display = "none";
+                return dispatch(loginSS(data.token));
+            })
+            .catch(err => {
+                alertMessage(err, 0, 1300);
+            });
+        }
+        catch(error){
+            alertMessage(error, 0, 1300);
+        };
+    }
+}
+
+export const regist=(dataUser)=>{
+    return dispatch =>{
+        try{
+            return fetch('http://ec2-54-169-237-154.ap-southeast-1.compute.amazonaws.com/api/v1/auth/register',{
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                body: JSON.stringify(dataUser)
+            })
+            .then(data=>{
+                if(data.ok){
+                    return data.json();
+                }
+                else throw new Error("something went wrong");})
+            .then(data=>{
+                alertMessage("welcome "+ data.username, 1, 1300);
+                document.getElementById("registForm").style.display = "none";
+                dispatch(loginSS(data.token));
+            })
+            .catch(error => {alertMessage(error, 0, 1300)});
+        }
+        catch(error){
+            alertMessage(error, 0, 1300);
+        };
+    }
+}
+
+
+export function logout(){
+    return {
+        type: LOGOUT
+    }
+}
+
+
+export const addEmployee=(token, data)=>{
+    return dispatch =>{
+        try{
+            return fetch(`http://ec2-54-169-237-154.ap-southeast-1.compute.amazonaws.com/api/v1/users`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', 'Accept': 'application/json',
+                  'Authorization': `${token}`
+                },
+                body: JSON.stringify(data)})
+            .then(data=>{
+                if(data.ok){
+                    document.getElementById("addForm").style.display = "none";
+                    return data.json();
+                }
+                else throw new Error("something went wrong");})
+            .then(res => {
+                alertMessage("created "+ res.username, 1, 1300);
+                return dispatch(getEmployees())})
+            .catch(err => {
+                alertMessage(err, 0, 1300);
+            })
+        }
+        catch(error){
+            alertMessage(error, 0, 1300);
+            dispatch(fetchFail());
+        };
+    }
+}

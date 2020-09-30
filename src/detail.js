@@ -1,76 +1,142 @@
 import React from 'react'
 import { connect } from "react-redux";
 import { getEmployee, editEmployee, deleteEmployee } from './redux/actions';
-import { useEffect } from 'react';
+import alertMessage from "./libs/AlertBox/alert"
 
 let user = {}
 
-const Detail = ({ getEmployee, detail, id, loadingDetail, editEmployee, deleteEmployee }) => {
+const Detail = ({ getEmployee, detail, id, loadingDetail, editEmployee, deleteEmployee, token }) => {
 
-  useEffect(() => {
-    getEmployee(id);
-    return () => {
-      if (id != 0) {
-        getEmployee(id);
-      }
+  user = detail;
+
+  const closeDetailForm = () => {
+    document.getElementById("detail").style.display = "none";
+  }
+
+  const openEditform = () => {
+    document.getElementById("editForm").style.display = "block";
+  }
+
+  const closeEditForm = () => {
+    document.getElementById("editForm").style.display = "none";
+  }
+
+
+  const openDeleteform = () => {
+    document.getElementById("deleteForm").style.display = "block";
+  }
+
+  const closeDeleteForm = () => {
+    document.getElementById("deleteForm").style.display = "none";
+  }
+
+  const edit = ()=>{
+
+    let data = {
+      "fullName": document.getElementById('editFullName').value,
+      "password": document.getElementById('editPassword').value
     }
-  }, [id]);
-
-  user = detail ? detail : user;
-
- const edit= (e)=>{
-    console.log('presss');
-    if(e.keyCode  == 13){
-      let data = {
-        name: document.getElementById('input_name').value,
-        job: document.getElementById('input_job').value
-      }
-      console.log("13");
-      if(!document.getElementById('input_name').value){
-        document.getElementById('input_name').focus();
-      }
-      else if(!document.getElementById('input_job').value){
-        document.getElementById('input_job').focus();
-      }
-      else editEmployee(user.id, data);
+    if (!data.fullName || !data.password) {
+      if(!data.fullName) document.getElementById('editFullName').focus();
+      else document.getElementById("editPassword").focus();
+      alertMessage("please fill all information", 3, 1300);
+    }
+    else {
+      editEmployee(user.id, data, token);
     }
   };
 
-  
+
   return (
-    <div className="detail-view">
-      {id != 0 && (loadingDetail && <h3 id='loading-detail'>loading</h3> )||
-        <div id='goDown'>
-          <div className='user-detail'>
-            <table>
-              <tr ><td className='td-title'>Id:</td><td>{user.id}</td></tr>
-              {(user.name || user.first_name) && <tr><td className='td-title'>Name:</td><td>{user.first_name} {user.last_name} {user.name}</td></tr>}
-              { user.email && <tr><td className='td-title'>Email:</td><td>{user.email}</td></tr>}
-              { user.job && <tr><td className='td-title'>Job:</td><td>{user.job}</td></tr>}
-              <tr id='tr_name' style={{"display": "none"}} onKeyUp={edit}><td className='td-title'>New name:</td><td ><input type="text" id="input_name"/></td></tr>
-              <tr id='tr_job'  style={{"display": "none"}} onKeyUp={edit}><td className='td-title'>Job:</td><td><input type="text" id="input_job"/></td></tr>            
-              <tr>
-                <td className='td-title'>
-                  <i className="fa fa-pencil-square-o" id='edit' onClick={() => {
-                    document.getElementById('direct').innerText = 'fill new name and job then click enter to edit';
-                    document.getElementById('tr_name').style={'display': 'block'};
-                    document.getElementById('tr_job').style={'display': 'block'};
-                    document.getElementsByClassName('user-detail')[0].style={'height': '170px'};
-                      let data = {
-                        name: document.getElementById('input_name').value,
-                        job: document.getElementById('input_job').value
-                      }
-                      // editEmployee(user.id, data);
-                    }} alt="edit" />
-                </td>
-                <td className='td-title'>
-                  <i className="fa fa-trash-o" id='delete' onClick={deleteEmployee} alt="delete" />
-                </td></tr>
-            </table>
-            <span id='direct'></span>
+    <div className="detail-view ">
+      {id != 0 && (loadingDetail && <h3 id='loading-detail'>loading</h3>) ||
+        <div id='detail' className="div_blur displayNone">
+          <div id='user-detail' className="popup">
+            <form className="form-container">
+              {(user.id) &&
+                <div  ><label htmlFor="id"><b>Id</b></label>
+                  <input type="text" id="id" value={user.id} name="id" readOnly />
+                </div>
+              }
+              {(user.fullName) &&
+                <div><label htmlFor="fullName"><b>FullName</b></label>
+                  <input type="text" id="fullName" value={user.fullName} name="fullName" readOnly />
+                </div>
+              }
+              {(user.email) &&
+                <div>
+                  <label htmlFor="email"><b>Email</b></label>
+                  <input type="text" id="email" value={user.email} name="email" readOnly />
+                </div>
+              }
+              {(user.username) && <div>
+                <label htmlFor="username"><b>Username</b></label>
+                <input type="text" id="username" value={user.username} name="username" readOnly />
+              </div>}
+              <i className="fa fa-pencil-square-o" id='edit' onClick={openEditform} alt="edit" />
+              <i className="fa fa-trash-o" id='delete' onClick={openDeleteform} alt="delete" />
+
+              <button type="button" className="btn cancel" onClick={closeDetailForm}>Close</button>
+            </form>
           </div>
         </div>
       }
+
+      <div id='editForm' className="div_blur displayNone">
+        <div className="popup">
+          <form className="form-container">
+            {!token && <p style={{ "color": "red" }}>please login before edit a user</p> ||
+              <div>
+                {(user.id) &&
+                  <div  ><label htmlFor="id"><b>Id</b></label>
+                    <input type="text" value={user.id} name="id" readOnly />
+                  </div>
+                }
+
+                {(user.email) &&
+                  <div>
+                    <label htmlFor="email"><b>Email</b></label>
+                    <input type="text" defaultValue={user.email} name="email" readOnly />
+                  </div>
+                }
+                {(user.username) && 
+                  <div>
+                    <label htmlFor="username"><b>Username</b></label>
+                    <input type="text" defaultValue={user.username} name="username" readOnly />
+                  </div>}
+                {(user.fullName) &&
+                  <div>
+                    <label htmlFor="fullName"><b>FullName</b></label>
+                    <input type="text" id="editFullName" defaultValue={user.fullName} name="fullName" />
+                  </div>
+                }
+
+                <label htmlFor="password"><b>Password</b></label>
+                <input type="password" id="editPassword" placeholder="Enter new password" name="password" />
+
+                <button type="button" className="btn" onClick={edit}>Edit</button>
+              </div>}
+            <button type="button" className="btn cancel" onClick={closeEditForm}>Close</button>
+          </form>
+        </div>
+      </div>
+
+
+      <div id='deleteForm' className="div_blur displayNone">
+        <div className="popup">
+          <form className="form-container">
+            {!token && <p style={{ "color": "red" }}>please login before delete a user</p> ||
+              <div>
+                <p style={{ "color": "red" }}>Are you sure to delete user has name={user.username} and id={user.id} </p>
+                <button type="button" className="btn" onClick={() => deleteEmployee(user.id, token)}>Yes, delete!</button>
+              </div>}
+            <button type="button" className="btn cancel" onClick={closeDeleteForm}>Close</button>
+          </form>
+        </div>
+      </div>
+
+
+
     </div>
   )
 }
@@ -78,13 +144,14 @@ const Detail = ({ getEmployee, detail, id, loadingDetail, editEmployee, deleteEm
 const mapStateToProps = state => ({
   detail: state.detail,
   loadingDetail: state.loadingDetail,
-  id: state.id
+  id: state.id,
+  token: state.token
 });
 
 const mapDispatchToProps = dispatch => ({
   getEmployee: (id) => dispatch(getEmployee(id)),
-  editEmployee: (id, data) => dispatch(editEmployee(id, data)),
-  deleteEmployee: () => dispatch(deleteEmployee())
+  editEmployee: (id, data, token) => dispatch(editEmployee(id, data, token)),
+  deleteEmployee: (i, token) => dispatch(deleteEmployee(i, token))
 });
 
 export default connect(
