@@ -108,7 +108,7 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
   return (
     <div className="App">
       <header className="App-header">
-        <img className="logo-app" src={require("./icon/120017990_329072801636807_1813089441055996983_n.png")} />
+        <img className="logo-app" src={require("./icon/logoHeader.png")} />
         <div className="status">
           {!token && <span id="login" className="st-click" onClick={login_click}>login</span>}
           {!token && <span id="regist" className="st-click" onClick={regist_click}>regist</span>}
@@ -189,7 +189,7 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
             <h2>List Employees</h2>
             {
               list.map(employee => (
-                <div className="item column" key={employee.id}>
+                <div className="column" key={employee.id}>
                   <div className='card' onClick={() => { updateId(employee.id); }}>
                     <div className='avata' > <img src={employee.avatar} alt="avatar of user here :(" /></div>
                     <div className='name'>

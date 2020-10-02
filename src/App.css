@@ -3,7 +3,6 @@
 }
 
 body {
-  /* font-family: 'Poppins', sans-serif; */
   font-family: 'Grandstander', cursive;
   background: linear-gradient(to right, #75c7c1, #86A8E7, #7F7FD5);
   z-index: -100;
@@ -18,6 +17,16 @@ body {
   pointer-events: none;
 }
 
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -26,28 +35,25 @@ body {
 
 .App-header {
   background:  rgba(0, 0, 0, 0.6);
-  min-height: 8%;
-  text-align: left;
+  width: 100%;
+  padding: 0 20px 0 20px;
+  display: flex;
+  justify-content: space-between;
 }
 
-
-.App-header .logo-app {
-  height: 75px;
-  width: 230px;
+.logo-app {
+  height: 70px;
 }
 
 .status{
-  position: relative;
-  left: 90%;
-  width: 10%;
-  bottom: 10px;
+  line-height: 70px;
 }
 
 .st-click{
   display: inline-block;
   position: relative;
   padding: 0 2px 0 2px;
-  margin: 0 0 0 10px;
+  margin-left: 10px;
   color: white;
   cursor: pointer;
 }
@@ -55,7 +61,7 @@ body {
 .st-click::after{
   content: " ";
   position: absolute;
-  bottom: 0;
+  bottom: 25px;
   right: 0;
   height: 1px;
   width: 0;
@@ -67,44 +73,18 @@ body {
   width: 100%;
 }
 
-h2{
-  color: #30405e;
-}
-
 button{
   font-family: 'Grandstander', cursive;
   border-radius: 4px;
+  outline: none;
 }
 
-@keyframes jump {
-  0%   {top: 300px;}
-  50%  {top: 285px;}
-  100% {top: 300px;}
-}
-
-h2, h1{ 
-  font-size: 40px; 
-  font-weight: normal; 
-  line-height: 48px; margin: 20px 0 20px; 
+h2{ 
+  font-size: 43px; 
+  margin: 30px 0 10px 0; 
   text-align: center; 
+  color: #30405e;
   text-shadow: 1px 1px 2px #68848b; 
-}
-
-.title-detail{
-  margin-bottom: 90px;
-}
-
-a{
-  color: wheat;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 .list-users{
@@ -141,50 +121,35 @@ a{
   width: 100%;
   height: 100%;
   background-color: rgba(54, 54, 54, 0.87);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
   z-index: 20;
-}
-
-#edit, #delete{
-  width: 25px;
-  height: 25px;
-  margin-left: 10px;
-}
-
-.item{
-  width: 400px;
-  margin:auto;
 }
 
 .card{
   width: 100%;
-  margin: auto;
-  margin-top: 20px;
+  margin-top: 10px;
   border-radius: 7px;
   overflow:hidden;
   display: flex;
-  flex-wrap: wrap;
   transition: 0.25s;
   cursor: pointer;
   background: rgba(0, 0, 0, 0.2);
 }
 
 .card:hover{
-  transform: translateY(-5px);
   transform: scale(1.05);
 }
 
 .card .avata{
-  flex-basis: 40%;
+  flex-basis: 35%;
   display: flex;
   position: relative;
-  background: rgba(0, 0, 0, 0.2);
   z-index: 10;
   padding: 5px;
 }
 
 .card .avata img{
-  border: solid black 2px;
+  border: solid #484c6b 1.5px;
   width: 60px;
   height: 60px;
   max-width: 100%;
@@ -194,7 +159,7 @@ a{
 }
 
 .card .name{
-  flex-basis: 60%;
+  flex-basis: 65%;
   background: rgba(0, 0, 0, 0.2);
   line-height: 70px;
   font-weight: 500;
@@ -203,31 +168,11 @@ a{
 }
 
 
-*{box-sizing: border-box;}
-
-/* Button used to open the contact form - fixed at the bottom of the page */
-.open-button {
-  background-color: #555;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  position: fixed;
-  bottom: 23px;
-  right: 28px;
-  width: 280px;
-}
-
 /* The popup form - hidden by default */
 .form-popup {
-
   border-radius: 7px;
   display: none;
   position: absolute;
-  top: -2px;
-  right: 0;
-  transform: translateX(-7px);
   border: 3px solid #f1f1f1;
   z-index: 20;
 }
@@ -268,12 +213,11 @@ a{
 }
 
 /* css for popup */
-/* Add a red background color to the cancel button */
+
 .form-container .cancel {
   background-color: rgba(228, 149, 30, 0.877);
 }
 
-/* Add some hover effects to buttons */
 .form-container .btn:hover, .open-button:hover {
   opacity: 1;
 }
@@ -293,6 +237,7 @@ a{
   font-weight: bold;
   z-index: 20;
   transition: 0.2s;
+  font-size: 15.5px;
 }
 
 #create:hover{
@@ -309,24 +254,24 @@ a{
 
 .column {
   float: left;
-  width: 50%;
-  padding: 20px;
-  /* height: 220px; */
+  width: 44%;
+  padding: 10px;
+  margin: 0 3% 0 3%;
 }
 
-.fa {
-  font-size: 25px;
+i{
+  display: inline-block;
+  width: 50%;
+  font-size: 30px !important;
+  font-weight: 600 !important;
   color: #30405e;
-  font-weight: bold;
-  margin: 0 10px 12px 10px;
-}
-.fa:hover {
-  transform: scale(1.5);
-  cursor: pointer;
+  margin: 10px 0 20px 0 !important;
+  transition: 0.1s;
 }
 
-.i{
-  width: 50%;
+i:hover{
+  transform: scale(1.2);
+  cursor: pointer;
 }
 
 #div_AlertContainer{
