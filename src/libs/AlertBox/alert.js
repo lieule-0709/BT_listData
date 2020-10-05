@@ -31,10 +31,6 @@
             break;
     }
 
-//     <div class="alert">
-//   <span class="closebtn">&times;</span>  
-//   <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-// </div>
     let alert = document.createElement('div');
     alert.className += 'alert ' + alertClass;
     let span = document.createElement('span');

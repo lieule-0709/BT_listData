@@ -1,13 +1,10 @@
 import {GET_EMPLOYEES, GET_EMPLOYEES_SS, GET_EMPLOYEES_F,
-    GET_EMPLOYEE_SS, EDIT_EMPLOYEE_SS,
-    FETCH_PENDING, FETCH_F, UPDATE_ID, LOGIN_SS, LOGOUT} from './constants.js';
+    GET_EMPLOYEE_SS, FETCH_PENDING, FETCH_F, LOGIN_SS, LOGOUT} from './constants.js';
 
 const initialState = {
     employees: [],
-    id: 0,
     detail: {},
     loading: false,
-    loadingDetail: false,
     token: localStorage.getItem("token")
 };
 
@@ -22,40 +19,33 @@ export default function rootReducers(state=initialState, action){
             return{
                 ...state,
                 employees : action.payload,
-                loading : false,
-                loadingDetail: false
+                loading : false
             }
         case GET_EMPLOYEES_F:
             console.log(action.payload);
             return{
                 ...state,
-                loading : false,
-                loadingDetail: false
+                loading : false
             }
         case FETCH_PENDING: 
             return{
                 ...state,
-                loadingDetail: true
+                loading: true
             }
             
         case FETCH_F:
             return{
                 ...state,
-                loadingDetail: false
+                loading: false
             }
             
         case GET_EMPLOYEE_SS:
             return{
                 ...state,
-                loadingDetail: false,
+                loading: false,
                 detail : action.payload
             }
-
-        case UPDATE_ID:
-        return {
-            ...state,
-            id: action.payload
-        }
+            
         case LOGIN_SS:
             localStorage.setItem("token", action.payload);
             return{

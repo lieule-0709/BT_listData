@@ -1,11 +1,11 @@
 import React from 'react'
 import { connect } from "react-redux";
-import { getEmployee, editEmployee, deleteEmployee } from './redux/actions';
+import { editEmployee, deleteEmployee } from './redux/actions';
 import alertMessage from "./libs/AlertBox/alert"
 
 let user = {}
 
-const Detail = ({ getEmployee, detail, id, loadingDetail, editEmployee, deleteEmployee, token }) => {
+const Detail = ({ detail, editEmployee, deleteEmployee, token }) => {
 
   user = detail;
 
@@ -30,14 +30,14 @@ const Detail = ({ getEmployee, detail, id, loadingDetail, editEmployee, deleteEm
     document.getElementById("deleteForm").style.display = "none";
   }
 
-  const edit = ()=>{
+  const edit = () => {
 
     let data = {
       "fullName": document.getElementById('editFullName').value,
       "password": document.getElementById('editPassword').value
     }
     if (!data.fullName || !data.password) {
-      if(!data.fullName) document.getElementById('editFullName').focus();
+      if (!data.fullName) document.getElementById('editFullName').focus();
       else document.getElementById("editPassword").focus();
       alertMessage("please fill all information", 3, 1300);
     }
@@ -49,70 +49,67 @@ const Detail = ({ getEmployee, detail, id, loadingDetail, editEmployee, deleteEm
 
   return (
     <div className="detail-view ">
-      {id != 0 && (loadingDetail && <h3 id='loading-detail'>loading</h3>) ||
-        <div id='detail' className="div_blur displayNone">
-          <div id='user-detail' className="popup">
-            <form className="form-container">
-              {(user.id) &&
-                <div  ><label htmlFor="id"><b>Id</b></label>
-                  <input type="text" id="id" value={user.id} name="id" readOnly />
-                </div>
-              }
-              {(user.fullName) &&
-                <div><label htmlFor="fullName"><b>FullName</b></label>
-                  <input type="text" id="fullName" value={user.fullName} name="fullName" readOnly />
-                </div>
-              }
-              {(user.email) &&
-                <div>
-                  <label htmlFor="email"><b>Email</b></label>
-                  <input type="text" id="email" value={user.email} name="email" readOnly />
-                </div>
-              }
-              {(user.username) && <div>
-                <label htmlFor="username"><b>Username</b></label>
-                <input type="text" id="username" value={user.username} name="username" readOnly />
-              </div>}
-              <i className="fa fa-pencil-square-o" id='edit' onClick={openEditform} alt="edit" />
-              <i className="fa fa-trash-o" id='delete' onClick={openDeleteform} alt="delete" />
 
-              <button type="button" className="btn cancel" onClick={closeDetailForm}>Close</button>
-            </form>
-          </div>
+      {/* div show infor if user */}
+      <div id='detail' className="div_blur displayNone">
+        <div id='user-detail' className="popup">
+          <form className="form-container">
+            {(user.id) &&
+              <div  ><label htmlFor="id"><b>Id</b></label>
+                <input type="text" id="id" value={user.id} name="id" readOnly />
+              </div>
+            }
+            {(user.fullName) &&
+              <div><label htmlFor="fullName"><b>FullName</b></label>
+                <input type="text" id="fullName" value={user.fullName} name="fullName" readOnly />
+              </div>
+            }
+            {(user.email) &&
+              <div>
+                <label htmlFor="email"><b>Email</b></label>
+                <input type="text" id="email" value={user.email} name="email" readOnly />
+              </div>
+            }
+            {(user.username) && <div>
+              <label htmlFor="username"><b>Username</b></label>
+              <input type="text" id="username" value={user.username} name="username" readOnly />
+            </div>}
+            <i className="fa fa-pencil-square-o" id='edit' onClick={openEditform} alt="edit" />
+            <i className="fa fa-trash-o" id='delete' onClick={openDeleteform} alt="delete" />
+
+            <button type="button" className="btn cancel" onClick={closeDetailForm}>Close</button>
+          </form>
         </div>
-      }
+      </div>
 
+      {/* div show popup edit */}
       <div id='editForm' className="div_blur displayNone">
         <div className="popup">
           <form className="form-container">
-            {!token && <p style={{ "color": "red" }}>please login before edit a user</p> ||
+            {!token ? <p style={{ "color": "red" }}>please login before edit a user</p> :
               <div>
                 {(user.id) &&
                   <div  ><label htmlFor="id"><b>Id</b></label>
                     <input type="text" value={user.id} name="id" readOnly />
                   </div>
                 }
-
                 {(user.email) &&
                   <div>
                     <label htmlFor="email"><b>Email</b></label>
                     <input type="text" defaultValue={user.email} name="email" readOnly />
                   </div>
                 }
-                {(user.username) && 
+                {(user.username) &&
                   <div>
                     <label htmlFor="username"><b>Username</b></label>
                     <input type="text" defaultValue={user.username} name="username" readOnly />
                   </div>}
-                {(user.fullName) &&
-                  <div>
-                    <label htmlFor="fullName"><b>FullName</b></label>
-                    <input type="text" id="editFullName" defaultValue={user.fullName} name="fullName" />
-                  </div>
-                }
+
+                <label htmlFor="fullName"><b>FullName</b></label>
+                <input type="text" id="editFullName" defaultValue={user.fullName?user.fullName:"Enter fulName"} name="fullName" />
 
                 <label htmlFor="password"><b>Password</b></label>
-                <input type="password" id="editPassword" placeholder="Enter new password" name="password" />
+                <input type="password" id="editPassword" name="password" />
 
                 <button type="button" className="btn" onClick={edit}>Edit</button>
               </div>}
@@ -121,11 +118,11 @@ const Detail = ({ getEmployee, detail, id, loadingDetail, editEmployee, deleteEm
         </div>
       </div>
 
-
+      {/* div show popup delete */}
       <div id='deleteForm' className="div_blur displayNone">
         <div className="popup">
           <form className="form-container">
-            {!token && <p style={{ "color": "red" }}>please login before delete a user</p> ||
+            {!token ? <p style={{ "color": "red" }}>please login before delete a user</p> :
               <div>
                 <p style={{ "color": "red" }}>Are you sure to delete user has name={user.username} and id={user.id} </p>
                 <button type="button" className="btn" onClick={() => deleteEmployee(user.id, token)}>Yes, delete!</button>
@@ -135,21 +132,16 @@ const Detail = ({ getEmployee, detail, id, loadingDetail, editEmployee, deleteEm
         </div>
       </div>
 
-
-
     </div>
   )
 }
 
 const mapStateToProps = state => ({
   detail: state.detail,
-  loadingDetail: state.loadingDetail,
-  id: state.id,
   token: state.token
 });
 
 const mapDispatchToProps = dispatch => ({
-  getEmployee: (id) => dispatch(getEmployee(id)),
   editEmployee: (id, data, token) => dispatch(editEmployee(id, data, token)),
   deleteEmployee: (i, token) => dispatch(deleteEmployee(i, token))
 });

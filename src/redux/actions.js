@@ -1,22 +1,13 @@
 import {GET_EMPLOYEES, GET_EMPLOYEES_SS, GET_EMPLOYEES_F, GET_EMPLOYEE_SS,
-     FETCH_PENDING, FETCH_F,
-     UPDATE_ID, LOGIN_SS, LOGOUT
+     FETCH_PENDING, FETCH_F, LOGIN_SS, LOGOUT
      } from './constants.js';
 import alertMessage from '../libs/AlertBox/alert';
 
 
-export function updateIdSS(id){
-    if(document.getElementById("detail")) document.getElementById("detail").style.display = "block";
-    return {
-        type: UPDATE_ID,
-        payload: id
-    }
-}
-
-
-export const updateId=(id)=>{
+export const getEmployee=(id, typeForm)=>{
     return dispatch =>{
         try{
+            dispatch(fetchPending());
             return fetch(`http://ec2-54-169-237-154.ap-southeast-1.compute.amazonaws.com/api/v1/users/${id}`)
             .then(data=>{
                 if(data.ok){
@@ -26,11 +17,14 @@ export const updateId=(id)=>{
             })
             .then(res => {
                 return dispatch(getEmployeeSuccess(res))})
-            .then(() => {return dispatch(updateIdSS(id))})
+            .then(res=>{
+                if(document.getElementById(typeForm)) document.getElementById(typeForm).style.display = "block";
+            })
             .catch(error => {alertMessage(error, 0, 1300)});
         }
         catch(error){
             alertMessage(error, 0, 1300);
+            dispatch(fetchFail);
         };
     }
 }
@@ -43,6 +37,8 @@ export function getEmployeesPending(){
 }
 
 export function getEmployeesSuccess(data){
+    if(document.getElementById("detail")) document.getElementById("detail").style.display = "block";
+    
     return {
         type: GET_EMPLOYEES_SS,
         payload: data
@@ -90,6 +86,7 @@ export function fetchFail(){
 }
 
 export function getEmployeeSuccess(data){
+    if(document.getElementById("detail")) document.getElementById("detail").style.display = "block";
     return {
         type: GET_EMPLOYEE_SS,
         payload: data
@@ -100,27 +97,6 @@ export function loginSS(data){
     return {
         type: LOGIN_SS,
         payload: data
-    }
-}
-
-export const getEmployee=(id)=>{
-    return dispatch =>{
-        try{
-            dispatch(fetchPending());
-            return fetch(`http://ec2-54-169-237-154.ap-southeast-1.compute.amazonaws.com/api/v1/users/${id}`)
-            .then(data=>{
-                if(data.ok){
-                    return data.json()
-                }
-                else throw new Error("something went wrong");
-            })
-            .then(res => {
-                return dispatch(getEmployeeSuccess(res))})
-            .catch(error => {alertMessage(error, 0, 1300)});
-        }
-        catch(error){
-            alertMessage(error, 0, 1300);
-        };
     }
 }
 
@@ -138,11 +114,15 @@ export const editEmployee=(id, data, token)=>{
             .then(data=>{
                 if(data.ok){
                     alertMessage("Edited!", 1, 1300);
-                    return data.json()
+                    return data.json();
                 }
-                else throw new Error("something went wrong");})
+                else throw new Error("something went wrong");}
+            )
             .then(data=>{
                 return dispatch(getEmployee(id));
+            })
+            .catch(err=>{
+                alertMessage(err, 0, 1300);
             })
         }
         catch(error){
@@ -154,7 +134,6 @@ export const editEmployee=(id, data, token)=>{
 export const deleteEmployee=(id, token)=>{
     return dispatch =>{
         try{
-            dispatch(fetchPending());
             return fetch(`http://ec2-54-169-237-154.ap-southeast-1.compute.amazonaws.com/api/v1/users/${id}`, {
                 method: 'DELETE',
                 headers: {'Accept': 'application/json' , 

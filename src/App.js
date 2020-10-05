@@ -7,20 +7,17 @@ import Detail from './detail.js';
 import alertMessage from './libs/AlertBox/alert';
 import './libs/AlertBox/style.css';
 import {
-  getEmployees, updateId, getEmployee, addEmployee
+  getEmployees, getEmployee, addEmployee
   , login, regist, logout
 } from './redux/actions';
-// import Popup from 'reactjs-popup';
 
 
 let list = [];
-let token = "";
 
-const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, employees, updateId, id, regist, login, logout, token, addEmployee }) => {
+const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, employees, regist, login, logout, token, addEmployee }) => {
 
   useEffect(() => {
     getEmployees();
-    // login();
   }, []);
 
   list = employees ? employees : list;
@@ -55,9 +52,9 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
       "password": document.getElementById('rgpassword').value
     }
     if (!data.fullName || !data.email || !data.username || !data.password) {
-      if(!data.fullName) document.getElementById('rgfullName').focus();
-      else if(!data.email) document.getElementById('rgemail').focus();
-      else if(!data.username) document.getElementById('rgusername').focus();
+      if (!data.fullName) document.getElementById('rgfullName').focus();
+      else if (!data.email) document.getElementById('rgemail').focus();
+      else if (!data.username) document.getElementById('rgusername').focus();
       else document.getElementById("rgpassword").focus();
       alertMessage("please fill all information", 3, 1300);
     }
@@ -68,11 +65,11 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
 
   var login_btn_click = () => {
     let data = {
-      "username": document.getElementById('username').value,
+      "username": document.getElementById('lgusername').value,
       "password": document.getElementById('password').value
     }
     if (!data.username || !data.password) {
-      if(!data.username) document.getElementById('username').focus();
+      if (!data.username) document.getElementById('lgusername').focus();
       else document.getElementById("password").focus();
       alertMessage("please fill all information", 3, 1300);
     }
@@ -97,8 +94,8 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
       "password": document.getElementById('newpassword').value
     }
     if (!data.fullName || !data.username || !data.password) {
-      if(!data.fullName) document.getElementById('newfullname').focus();
-      else if(!data.username) document.getElementById('newusername').focus();
+      if (!data.fullName) document.getElementById('newfullname').focus();
+      else if (!data.username) document.getElementById('newusername').focus();
       else document.getElementById("newpassword").focus();
       alertMessage("please fill all information", 3, 1300);
     }
@@ -108,7 +105,7 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
   return (
     <div className="App">
       <header className="App-header">
-        <img className="logo-app" src={require("./icon/logoHeader.png")} />
+        <img className="logo-app" src={require("./icon/logoHeader.png")} alt="Employees" />
         <div className="status">
           {!token && <span id="login" className="st-click" onClick={login_click}>login</span>}
           {!token && <span id="regist" className="st-click" onClick={regist_click}>regist</span>}
@@ -116,14 +113,14 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
         </div>
       </header>
 
-      {loading &&
+      {loading ?
         <div>
           <img src={logo} className="App-logo" alt="logo" />
           <h2>loading</h2>
         </div>
-        ||
+        :
         <div className="content">
-            <button onClick={openAddForm} id="create" className="create"> Create employee </button>
+          <button onClick={openAddForm} id="create" className="create"> Create employee </button>
           <div className="div_blur displayNone" id="addForm">
             <div className="popup">
               <form className="form-container">
@@ -150,7 +147,7 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
             <div className="popup">
               <form className="form-container" action="">
                 <label htmlFor="username"><b>Username</b></label>
-                <input type="text" id="username" placeholder="Enter username" name="username" />
+                <input type="text" id="lgusername" placeholder="Enter username" name="username" />
 
                 <label htmlFor="password"><b>Password</b></label>
                 <input type="password" id="password" placeholder="Enter Password" name="password" />
@@ -161,7 +158,7 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
             </div>
           </div>
 
-          
+
           <div className="div_blur displayNone" id="registForm">
             <div className="popup">
               <form className="form-container" action="">
@@ -190,11 +187,22 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
             {
               list.map(employee => (
                 <div className="column" key={employee.id}>
-                  <div className='card' onClick={() => { updateId(employee.id); }}>
+                  <div className='card' onClick={() => {
+                    getEmployee(employee.id, "detail");
+                  }}>
                     <div className='avata' > <img src={employee.avatar} alt="avatar of user here :(" /></div>
                     <div className='name'>
                       {employee.username}
                     </div>
+                  </div>
+
+                  <div className="div-btn">
+                    <i className="fa fa-pencil-square-o no-margin" id='edit' onClick={() => {
+                      getEmployee(employee.id, "editForm");
+                    }} alt="edit" />
+                    <i className="fa fa-trash-o no-margin" id='delete' onClick={() => {
+                      getEmployee(employee.id, "deleteForm");
+                    }} alt="delete" />
                   </div>
                 </div>
               ))}
@@ -203,7 +211,6 @@ const App = React.memo(({ getEmployees, getEmployee, deleteEmployee, loading, em
     </div>
   );
 })
-
 
 const mapStateToProps = state => ({
   employees: state.employees,
@@ -214,8 +221,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getEmployees: () => dispatch(getEmployees()),
-  updateId: (id) => dispatch(updateId(id)),
-  getEmployee: () => dispatch(getEmployee()),
+  getEmployee: (id, form) => dispatch(getEmployee(id, form)),
   addEmployee: (token, data) => dispatch(addEmployee(token, data)),
   login: (data) => dispatch(login(data)),
   regist: (data) => dispatch(regist(data)),
