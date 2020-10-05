@@ -7,7 +7,7 @@ import alertMessage from '../libs/AlertBox/alert';
 export const getEmployee=(id, typeForm)=>{
     return dispatch =>{
         try{
-            dispatch(fetchPending());
+            // dispatch(fetchPending());
             return fetch(`http://ec2-54-169-237-154.ap-southeast-1.compute.amazonaws.com/api/v1/users/${id}`)
             .then(data=>{
                 if(data.ok){
@@ -16,15 +16,19 @@ export const getEmployee=(id, typeForm)=>{
                 else throw new Error("something went wrong");
             })
             .then(res => {
-                return dispatch(getEmployeeSuccess(res))})
+                return dispatch(getEmployeeSuccess(res))
+            })
             .then(res=>{
                 if(document.getElementById(typeForm)) document.getElementById(typeForm).style.display = "block";
             })
-            .catch(error => {alertMessage(error, 0, 1300)});
+            .catch(error => {
+                alertMessage(error, 0, 1300);
+                // return dispatch(fetchFail());
+            });
         }
         catch(error){
             alertMessage(error, 0, 1300);
-            dispatch(fetchFail);
+            // dispatch(fetchFail);
         };
     }
 }
@@ -65,10 +69,15 @@ export const getEmployees=()=>{
             .then(data=>data.results)
             .then(res => {
                 return dispatch(getEmployeesSuccess(res))})
-            .catch(error => {alertMessage(error, 0, 1300)});
+            .catch(error => {
+                alertMessage(error, 0, 1300);
+                return dispatch(getEmployeesFail());
+            });
+               
         }
         catch(error){
             alertMessage(error, 0, 1300);
+            return dispatch(getEmployeesFail());
         };
     }
 }
